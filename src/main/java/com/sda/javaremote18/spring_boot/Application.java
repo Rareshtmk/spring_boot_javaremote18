@@ -5,11 +5,12 @@ import com.sda.javaremote18.spring_boot.config.AppConfig;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.lang.reflect.AnnotatedArrayType;
 
-@SpringBootApplication
+@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
 public class Application implements CommandLineRunner {
 
     public static void main(String[] args) {
