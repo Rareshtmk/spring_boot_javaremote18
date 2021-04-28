@@ -1,5 +1,6 @@
 package com.sda.javaremote18.spring_boot.models;
 
+
 import javax.persistence.*;
 
 @Entity
@@ -12,6 +13,8 @@ public class UserModel {
     private String password;
     private String firstName;
     private String lastName;
+
+
 
     public Integer getId() {
         return id;
