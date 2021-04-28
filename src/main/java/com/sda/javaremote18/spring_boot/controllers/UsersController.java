@@ -43,21 +43,20 @@ public class UsersController {
         user.setPassword(newPassword);
         System.out.println(user.getPassword());
         this.usersRepository.save(user);
-        return new ServerResponse(HttpStatus.OK.value(), "Utilizator creat cu succes!", "", user);
+        return new ServerResponse(HttpStatus.OK.value(), "utilizator creat cu succes", "", user);
     }
 
     @PostMapping("/users/login")
-    public ServerResponse login(@RequestBody LoginModel loginModel){
+    public ServerResponse login(@RequestBody LoginModel loginModel) {
         System.out.println(loginModel.getEmail());
         System.out.println(loginModel.getPassword());
 
-        UserModel user = this.usersRepository.findByEmail(loginModel.getEmail());
-        if(user != null){
-            return new ServerResponse(HttpStatus.OK.value(), "Utilizator logat cu succes","", user);
+        UserModel user=this.usersRepository.findByEmail(loginModel.getEmail());
 
+        if (user != null) {
+            return new ServerResponse(HttpStatus.OK.value(), "utilizator logat cu succes", "", user);
         } else {
-            return new ServerResponse(HttpStatus.BAD_REQUEST.value(), "","Nu am gasit utilizator", null);
-
+            return new ServerResponse(HttpStatus.BAD_REQUEST.value(), "", "NU AM GASIT UTILIZATOR", user);
         }
 
     }
