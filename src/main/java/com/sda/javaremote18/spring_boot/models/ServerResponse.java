@@ -6,6 +6,10 @@ public class ServerResponse {
     private String error;
     private Object result;
 
+    public ServerResponse(int status, String error){
+        this(status, "", error, null);
+    }
+
     public ServerResponse(int status, String message, String error, Object result) {
         this.status = status;
         this.message = message;

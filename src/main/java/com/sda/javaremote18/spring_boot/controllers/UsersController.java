@@ -1,24 +1,22 @@
 package com.sda.javaremote18.spring_boot.controllers;
 
 
-import com.sda.javaremote18.spring_boot.models.LoginModel;
 import com.sda.javaremote18.spring_boot.models.ServerResponse;
 import com.sda.javaremote18.spring_boot.models.UserModel;
+import org.apache.catalina.Server;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 public class UsersController {
     private UsersRepository usersRepository;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
 
     @Autowired
-    public UsersController(UsersRepository usersRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    public UsersController(UsersRepository usersRepository) {
         this.usersRepository = usersRepository;
     }
 
@@ -26,38 +24,21 @@ public class UsersController {
 //    public String showWelcomePage() {
 //        return "welcome"; // welcome reprezinta numele paginii de HTML
 //    }
+    @PutMapping("/users/update")
+    public ServerResponse update(@RequestBody UserModel user){
+        Optional<UserModel> checkUser = this.usersRepository.findById(user.getId());
 
-    @PostMapping("/users/create")
-    public ServerResponse creatUser(@RequestBody UserModel user) {
-//        UserModel userModel = new UserModel();
-//        userModel.setFirstName("Cipi");
-//        userModel.setLastName("Hampu");
-//        userModel.setEmail("ciprian@sda.com");
-//        userModel.setPassword("12345678");
-        System.out.println(user.getFirstName());
-        System.out.println(user.getLastName());
-        System.out.println(user.getEmail());
-        String currentPassword = user.getPassword();
-        String newPassword = this.bCryptPasswordEncoder.encode(currentPassword);
-        System.out.println(newPassword);
-        user.setPassword(newPassword);
-        System.out.println(user.getPassword());
-        this.usersRepository.save(user);
-        return new ServerResponse(HttpStatus.OK.value(), "utilizator creat cu succes", "", user);
-    }
+        if(checkUser.isPresent()) {
+            UserModel userFromDb = checkUser.get();
 
-    @PostMapping("/users/login")
-    public ServerResponse login(@RequestBody LoginModel loginModel) {
-        System.out.println(loginModel.getEmail());
-        System.out.println(loginModel.getPassword());
+            userFromDb.setFirstName(user.getFirstName());
+            userFromDb.setLastName(user.getLastName());
 
-        UserModel user=this.usersRepository.findByEmail(loginModel.getEmail());
+            this.usersRepository.save(userFromDb);
 
-        if (user != null) {
-            return new ServerResponse(HttpStatus.OK.value(), "utilizator logat cu succes", "", user);
+            return new ServerResponse(HttpStatus.OK.value(), "Utilizator actualizat cu succes", "", userFromDb);
         } else {
-            return new ServerResponse(HttpStatus.BAD_REQUEST.value(), "", "NU AM GASIT UTILIZATOR", user);
+            return new ServerResponse(HttpStatus.BAD_REQUEST.value(), "", "Nu am gasit utilizator", null);
         }
-
     }
 }
