@@ -2,10 +2,7 @@ package com.sda.javaremote18.spring_boot.controllers;
 
 import com.sda.javaremote18.spring_boot.config.security.JwtTokenUtil;
 import com.sda.javaremote18.spring_boot.models.*;
-import com.sda.javaremote18.spring_boot.models.auth.AuthRequestModel;
-import com.sda.javaremote18.spring_boot.models.auth.ForgotPasswordModel;
-import com.sda.javaremote18.spring_boot.models.auth.LoginModel;
-import com.sda.javaremote18.spring_boot.models.auth.RegisterModel;
+import com.sda.javaremote18.spring_boot.models.auth.*;
 import com.sda.javaremote18.spring_boot.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -16,10 +13,12 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class AuthController {
     private JwtTokenUtil jwtTokenUtil;
@@ -75,7 +74,7 @@ public class AuthController {
 
 
     @PostMapping("/auth/login-token")
-    public ResponseEntity loginWithToken(@RequestBody  AuthRequestModel request) {
+    public ServerResponse loginWithToken(@RequestBody  AuthRequestModel request) {
         System.out.println(request.getEmail());
         System.out.println(request.getPassword());
         try {
@@ -84,15 +83,12 @@ public class AuthController {
 
             UserModel user = (UserModel) authenticate.getPrincipal();
 
-            if(user == null) {
-                System.out.println("user is null");
-            }
+            // Pregatim obiectul pentru client
+            LoginResponseModel loginResponseModel = new LoginResponseModel(jwtTokenUtil.generateAccessToken(user), user);
+            return new ServerResponse(HttpStatus.OK.value(), "Bun venit " + user.getFirstName(), loginResponseModel);
 
-            return ResponseEntity.ok()
-                    .header(HttpHeaders.AUTHORIZATION, jwtTokenUtil.generateAccessToken(user))
-                    .body(user);
         } catch (BadCredentialsException ex) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            return new ServerResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
         }
     }
 

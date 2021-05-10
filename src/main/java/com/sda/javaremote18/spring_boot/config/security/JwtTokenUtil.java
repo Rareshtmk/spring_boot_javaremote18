@@ -14,6 +14,12 @@ import java.util.Date;
 
 import static java.lang.String.format;
 
+/**
+ * Clasa JwtTokenUtil este clasa raspunzatoare de gestionarea unui token
+ * -aici generam token-ul
+ * -aici citim date din token
+ * -aici validam token-ul(sa nu fie expirat si sa fie valid)
+ */
 @Component
 public class JwtTokenUtil {
 
@@ -26,7 +32,7 @@ public class JwtTokenUtil {
                 .setSubject(format("%s,%s", user.getId(), user.getEmail()))
                 .setIssuer(jwtIssuer)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000)) // 1 week
+                .setExpiration(new Date(System.currentTimeMillis() + 30 * 24 * 60 * 60 * 1000)) // 30 de zile valabilitate
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }

@@ -18,6 +18,9 @@ import java.util.List;
 
 import static org.apache.logging.log4j.util.Strings.isEmpty;
 
+/**
+ * Clasa JwtTokenFilter se ocupa cu identificarea token-ului in request si trimiterea lui spre validare
+ */
 @Component
 public class JwtTokenFilter extends OncePerRequestFilter {
 
@@ -34,6 +37,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain chain)
             throws ServletException, IOException {
+        //token example :
+        //Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzLG1hcmlhbkBlbWFpbC5jb20iLCJpc3MiOiJjb20uc2RhLmphdmFyZW1vdGUxOC5zcHJpbmdfYm9vdCIsImlhdCI6MTYyMDY2MTg3MSwiZXhwIjoxNjE4OTU4OTAzfQ.GhrkOH0gt_WBmX80eMVmytqH1UAgew4EYGDTKxDKbEF4bSYDsswMzgOv6qWCB_jLDdMHyDkGiaV8Fkspcise5A
         // Get authorization header and validate
         final String header = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (isEmpty(header) || !header.startsWith("Bearer ")) {
@@ -42,6 +47,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         }
 
         // Get jwt token and validate
+        // Valoare token-ului este separata dupa spatiu " ", apoi se ia a doua pozitie din array-ul obtinut
         final String token = header.split(" ")[1].trim();
         if (!jwtTokenUtil.validate(token)) {
             chain.doFilter(request, response);

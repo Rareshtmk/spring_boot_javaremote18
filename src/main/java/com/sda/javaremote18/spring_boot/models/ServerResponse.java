@@ -10,6 +10,13 @@ public class ServerResponse {
         this(status, "", error, null);
     }
 
+    public ServerResponse(int status, String message, Object result){
+        this.status = status;
+        this.message = message;
+        this.error = " ";
+        this.result = result;
+    }
+
     public ServerResponse(int status, String message, String error, Object result) {
         this.status = status;
         this.message = message;
