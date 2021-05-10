@@ -84,6 +84,10 @@ public class AuthController {
 
             UserModel user = (UserModel) authenticate.getPrincipal();
 
+            if(user == null) {
+                System.out.println("user is null");
+            }
+
             return ResponseEntity.ok()
                     .header(HttpHeaders.AUTHORIZATION, jwtTokenUtil.generateAccessToken(user))
                     .body(user);
