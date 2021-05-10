@@ -10,17 +10,16 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.lang.reflect.AnnotatedArrayType;
 
-@SpringBootApplication //(exclude = {SecurityAutoConfiguration.class}) - anularea securitatii
+@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
 public class Application {
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
 
-//    @Bean
-//    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
-//
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
 }

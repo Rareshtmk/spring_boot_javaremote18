@@ -1,12 +1,20 @@
 package com.sda.javaremote18.spring_boot.controllers;
 
+import com.sda.javaremote18.spring_boot.config.security.JwtTokenUtil;
 import com.sda.javaremote18.spring_boot.models.*;
+import com.sda.javaremote18.spring_boot.models.auth.AuthRequestModel;
 import com.sda.javaremote18.spring_boot.models.auth.ForgotPasswordModel;
 import com.sda.javaremote18.spring_boot.models.auth.LoginModel;
 import com.sda.javaremote18.spring_boot.models.auth.RegisterModel;
 import com.sda.javaremote18.spring_boot.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,13 +22,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class AuthController {
+    private JwtTokenUtil jwtTokenUtil;
     private UsersRepository usersRepository;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private AuthenticationManager authenticationManager;
 
     @Autowired
-    public AuthController(UsersRepository usersRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public AuthController(UsersRepository usersRepository, BCryptPasswordEncoder bCryptPasswordEncoder,
+                          AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil) {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.usersRepository = usersRepository;
+        this.jwtTokenUtil = jwtTokenUtil;
+        this.authenticationManager = authenticationManager;
     }
 
     @PostMapping("/auth/register")
@@ -60,6 +73,25 @@ public class AuthController {
         return new ServerResponse(HttpStatus.OK.value(), "utilizator creat cu succes", "", user);
     }
 
+
+    @PostMapping("/auth/login-token")
+    public ResponseEntity loginWithToken(@RequestBody  AuthRequestModel request) {
+        System.out.println(request.getEmail());
+        System.out.println(request.getPassword());
+        try {
+            Authentication authenticate = authenticationManager
+                    .authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+
+            UserModel user = (UserModel) authenticate.getPrincipal();
+
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.AUTHORIZATION, jwtTokenUtil.generateAccessToken(user))
+                    .body(user);
+        } catch (BadCredentialsException ex) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    }
+
     @PostMapping("/auth/login")
     public ServerResponse login(@RequestBody LoginModel loginModel) {
         System.out.println(loginModel.getEmail());
@@ -70,6 +102,8 @@ public class AuthController {
         }
 
         UserModel user = this.usersRepository.findByEmail(loginModel.getEmail());
+
+
 
         if (user != null) {
             if (this.bCryptPasswordEncoder.matches(loginModel.getPassword(), user.getPassword())) {

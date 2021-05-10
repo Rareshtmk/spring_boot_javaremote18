@@ -21,13 +21,13 @@ import static org.apache.logging.log4j.util.Strings.isEmpty;
 @Component
 public class JwtTokenFilter extends OncePerRequestFilter {
 
-    private JwtTokenUtil jwtTokenUtil;
-    private UsersRepository usersRepository;
+    private final JwtTokenUtil jwtTokenUtil;
+    private final UsersRepository userRepo;
 
     public JwtTokenFilter(JwtTokenUtil jwtTokenUtil,
-                          UsersRepository usersRepository) {
+                          UsersRepository userRepo) {
         this.jwtTokenUtil = jwtTokenUtil;
-        this.usersRepository = usersRepository;
+        this.userRepo = userRepo;
     }
 
     @Override
@@ -50,8 +50,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         }
 
         // Get user identity and set it on the spring security context
-        UserDetails userDetails = usersRepository
-                .findByEmail(jwtTokenUtil.getUsername(token))
+        UserDetails userDetails = userRepo
+                .findUserByEmail(jwtTokenUtil.getUsername(token))
                 .orElse(null);
 
         UsernamePasswordAuthenticationToken
@@ -68,5 +68,4 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         chain.doFilter(request, response);
     }
-
 }
