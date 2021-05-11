@@ -56,6 +56,7 @@ public class Utils {
             int index
                     = (int)(alphaNumericString.length()
                     * Math.random());
+            System.out.println(index);
 
             // add Character one by one in end of sb
             sb.append(alphaNumericString
