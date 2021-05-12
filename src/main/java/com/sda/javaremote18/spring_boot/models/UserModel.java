@@ -1,12 +1,14 @@
 package com.sda.javaremote18.spring_boot.models;
 
 
+import com.sda.javaremote18.spring_boot.models.item.ItemModel;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 @Entity
 @Table(name = "tbl_users")
@@ -19,7 +21,8 @@ public class UserModel implements UserDetails {
     private String firstName;
     private String lastName;
 
-
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ItemModel> items;
 
     public Integer getId() {
         return id;

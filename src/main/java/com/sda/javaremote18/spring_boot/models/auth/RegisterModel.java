@@ -9,7 +9,7 @@ public class RegisterModel {
     private String firstName;
     private String lastName;
 
-    public boolean isValid(){
+    public boolean isValid() {
         int counter = 0;
         if(!Utils.isValidEmail(this.email)){
             counter++;

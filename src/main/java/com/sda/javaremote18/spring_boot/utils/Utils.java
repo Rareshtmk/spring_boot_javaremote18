@@ -41,13 +41,14 @@ public class Utils {
     // n- reprezinta lungimea String-ului
     public static String getRandomString(int n) {
 
+        System.out.println("random sting");
         // chose a Character random from this String
         String alphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 + "0123456789"
                 + "abcdefghijklmnopqrstuvxyz";
 
         // create StringBuffer size of AlphaNumericString
-        StringBuilder sb = new StringBuilder(n);
+        StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < n; i++) {
 

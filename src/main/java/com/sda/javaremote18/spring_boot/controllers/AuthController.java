@@ -130,7 +130,7 @@ public class AuthController {
 
                 this.usersRepository.save(user);
 
-                return new ServerResponse(HttpStatus.OK.value(), "Parola a fost schimbata cu succes", "", null);
+                return new ServerResponse(HttpStatus.OK.value(), "Parola a fost schimbata cu succes", "", generatedPassword);
             } else {
                 return new ServerResponse(HttpStatus.BAD_REQUEST.value(), "", "Nu am gasit utilizator", null);
             }

@@ -24,6 +24,7 @@ public class UsersController {
 //    public String showWelcomePage() {
 //        return "welcome"; // welcome reprezinta numele paginii de HTML
 //    }
+
     @PutMapping("/users/update")
     public ServerResponse update(@RequestBody UserModel user) {
         Optional<UserModel> checkUser = this.usersRepository.findById(user.getId());
