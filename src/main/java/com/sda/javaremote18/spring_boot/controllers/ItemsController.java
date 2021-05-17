@@ -96,10 +96,27 @@ public class ItemsController {
         return new ServerResponse(HttpStatus.OK.value(), "Item-ul a fost sters cu succes", null);
     }
 
+    @DeleteMapping("/items/delete/{itemId}")
+    public ServerResponse deleteForever(@PathVariable int itemId) {
+        if(itemId <= 0){
+            return new ServerResponse(HttpStatus.BAD_REQUEST.value(), "Item-ul nu exista in baza de date");
+        }
+
+        ItemModel itemFromDb = this.itemsRepository.findById(itemId).orElse(null);
+
+        if(itemFromDb == null){
+            return new ServerResponse(HttpStatus.BAD_REQUEST.value(), "Item-ul nu exista in baza de date");
+        }
+
+        this.itemsRepository.delete(itemFromDb);
+        return new ServerResponse(HttpStatus.OK.value(), "Item-ul a fost sters cu succes", null);
+
+    }
+
     @GetMapping("/items")
     public ServerResponse findAll() {
         List<ItemModel> items = this.itemsRepository.findAllByDeletedFalse();
 
-        return new ServerResponse(HttpStatus.OK.value(), "Item-ul a fost sters cu succes", items);
+        return new ServerResponse(HttpStatus.OK.value(), "Items list", items);
     }
 }

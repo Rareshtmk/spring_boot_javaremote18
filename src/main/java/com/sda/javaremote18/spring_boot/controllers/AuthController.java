@@ -73,7 +73,7 @@ public class AuthController {
     }
 
 
-    @PostMapping("/auth/login-token")
+    @PostMapping("/auth/login")
     public ServerResponse loginWithToken(@RequestBody  AuthRequestModel request) {
         System.out.println(request.getEmail());
         System.out.println(request.getPassword());
@@ -92,30 +92,30 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/auth/login")
-    public ServerResponse login(@RequestBody LoginModel loginModel) {
-        System.out.println(loginModel.getEmail());
-        System.out.println(loginModel.getPassword());
-
-        if (!loginModel.isValid()) {
-            return new ServerResponse(HttpStatus.BAD_REQUEST.value(), "Adresa de email sau parola incorecta!");
-        }
-
-        UserModel user = this.usersRepository.findByEmail(loginModel.getEmail());
-
-
-
-        if (user != null) {
-            if (this.bCryptPasswordEncoder.matches(loginModel.getPassword(), user.getPassword())) {
-                return new ServerResponse(HttpStatus.OK.value(), "Utilizator logat cu succes", "", user);
-            }
-            // pentru cazul in care parolele nu se potrivesc
-            return new ServerResponse(HttpStatus.OK.value(), "Parola incorecta!", "", null);
-        } else {
-            return new ServerResponse(HttpStatus.BAD_REQUEST.value(), "", "Nu am gasit utilizator", null);
-        }
-
-    }
+//    @PostMapping("/auth/login")
+//    public ServerResponse login(@RequestBody LoginModel loginModel) {
+//        System.out.println(loginModel.getEmail());
+//        System.out.println(loginModel.getPassword());
+//
+//        if (!loginModel.isValid()) {
+//            return new ServerResponse(HttpStatus.BAD_REQUEST.value(), "Adresa de email sau parola incorecta!");
+//        }
+//
+//        UserModel user = this.usersRepository.findByEmail(loginModel.getEmail());
+//
+//
+//
+//        if (user != null) {
+//            if (this.bCryptPasswordEncoder.matches(loginModel.getPassword(), user.getPassword())) {
+//                return new ServerResponse(HttpStatus.OK.value(), "Utilizator logat cu succes", "", user);
+//            }
+//            // pentru cazul in care parolele nu se potrivesc
+//            return new ServerResponse(HttpStatus.OK.value(), "Parola incorecta!", "", null);
+//        } else {
+//            return new ServerResponse(HttpStatus.BAD_REQUEST.value(), "", "Nu am gasit utilizator", null);
+//        }
+//
+//    }
 
     @PostMapping("/auth/forgot-password")
     public ServerResponse forgotPassword(@RequestBody ForgotPasswordModel forgotPasswordModel) {
