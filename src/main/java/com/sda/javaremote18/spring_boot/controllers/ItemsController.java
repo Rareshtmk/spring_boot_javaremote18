@@ -100,6 +100,6 @@ public class ItemsController {
     public ServerResponse findAll() {
         List<ItemModel> items = this.itemsRepository.findAllByDeletedFalse();
 
-        return new ServerResponse(HttpStatus.OK.value(), "Item-ul a fost sters cu succes", items);
+        return new ServerResponse(HttpStatus.OK.value(), "Lista item-elor", items);
     }
 }
