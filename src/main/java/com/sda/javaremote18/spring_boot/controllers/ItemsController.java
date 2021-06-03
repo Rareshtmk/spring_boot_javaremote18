@@ -2,6 +2,7 @@ package com.sda.javaremote18.spring_boot.controllers;
 
 import com.sda.javaremote18.spring_boot.models.ServerResponse;
 import com.sda.javaremote18.spring_boot.models.UserModel;
+import com.sda.javaremote18.spring_boot.models.category.CategoryModel;
 import com.sda.javaremote18.spring_boot.models.item.ItemDto;
 import com.sda.javaremote18.spring_boot.models.item.ItemModel;
 import org.apache.catalina.User;
@@ -16,11 +17,14 @@ import java.util.List;
 public class ItemsController {
     private ItemsRepository itemsRepository;
     private UsersRepository usersRepository;
+    private CategoriesRepository categoriesRepository;
 
     @Autowired
-    public ItemsController(ItemsRepository itemsRepository, UsersRepository usersRepository){
+    public ItemsController(ItemsRepository itemsRepository, UsersRepository usersRepository, CategoriesRepository categoriesRepository){
         this.itemsRepository = itemsRepository;
         this.usersRepository = usersRepository;
+        this.categoriesRepository = categoriesRepository;
+
     }
 
     @PostMapping("/items/create")
@@ -35,6 +39,12 @@ public class ItemsController {
             return new ServerResponse(HttpStatus.BAD_REQUEST.value(), "OwnerId invalid");
         }
 
+        CategoryModel category = this.categoriesRepository.findById(itemDto.getCategoryId()).orElse(null);
+
+        if(category == null){
+            return new ServerResponse(HttpStatus.BAD_REQUEST.value(),"CategoryId invalid");
+        }
+
         ItemModel item = new ItemModel();
         item.setTitle(itemDto.getTitle());
         item.setDescription(itemDto.getDescription());
@@ -42,6 +52,8 @@ public class ItemsController {
         item.setDate(new Date());
         item.setDeleted(false);
         item.setOwner(owner);
+
+        item.setCategory(category);
 
         this.itemsRepository.save(item);
 
@@ -66,11 +78,18 @@ public class ItemsController {
             return new ServerResponse(HttpStatus.BAD_REQUEST.value(), "OwnerId invalid");
         }
 
+        CategoryModel category = this.categoriesRepository.findById(itemDto.getCategoryId()).orElse(null);
+
+        if(category == null){
+            return new ServerResponse(HttpStatus.BAD_REQUEST.value(),"CategoryId invalid");
+        }
+
 
         itemFromDb.setTitle(itemDto.getTitle());
         itemFromDb.setDescription(itemDto.getDescription());
         itemFromDb.setPrice(itemDto.getPrice());
         itemFromDb.setOwner(owner);
+        itemFromDb.setCategory(category);
 
         this.itemsRepository.save(itemFromDb);
 
@@ -98,7 +117,7 @@ public class ItemsController {
 
     @GetMapping("/items")
     public ServerResponse findAll() {
-        List<ItemModel> items = this.itemsRepository.findAllByDeletedFalse();
+        List<ItemModel> items = this.itemsRepository.findAll();
 
         return new ServerResponse(HttpStatus.OK.value(), "Lista item-elor", items);
     }

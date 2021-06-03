@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface ItemsRepository extends CrudRepository<ItemModel, Integer> {
     List<ItemModel> findAllByDeletedFalse();
+    List<ItemModel> findAll();
 }

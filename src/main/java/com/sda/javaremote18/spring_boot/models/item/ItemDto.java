@@ -11,6 +11,7 @@ public class ItemDto {
     private String description;
     private Double price;
     private Integer ownerId;
+    private Integer categoryId;
 
     public boolean isValid() {
         int counter = 0;
@@ -23,7 +24,18 @@ public class ItemDto {
         if(ownerId < 0) {
             counter++;
         }
+        if(categoryId < 0){
+            counter++;
+        }
         return counter == 0;
+    }
+
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
     }
 
     public Integer getId() {

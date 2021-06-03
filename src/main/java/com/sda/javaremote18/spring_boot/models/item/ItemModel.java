@@ -2,6 +2,7 @@ package com.sda.javaremote18.spring_boot.models.item;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sda.javaremote18.spring_boot.models.UserModel;
+import com.sda.javaremote18.spring_boot.models.category.CategoryModel;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -27,9 +28,21 @@ public class ItemModel {
     private Date date;
     private Boolean deleted;
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fk_category")
+    @JsonIgnore
+    private CategoryModel category;
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_item")
     @JsonIgnore
     private UserModel owner;
+
+    public CategoryModel getCategory() {
+        return category;
+    }
+
+    public void setCategory(CategoryModel category) {
+        this.category = category;
+    }
 
     public Integer getId() {
         return id;
