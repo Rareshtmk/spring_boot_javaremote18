@@ -1,4 +1,4 @@
-package com.sda.javaremote18.spring_boot.controllers;
+package com.sda.javaremote18.spring_boot.controllers.users;
 
 import com.sda.javaremote18.spring_boot.models.UserModel;
 import org.springframework.data.jpa.repository.Query;

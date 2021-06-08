@@ -1,4 +1,4 @@
-package com.sda.javaremote18.spring_boot.controllers;
+package com.sda.javaremote18.spring_boot.controllers.items;
 
 import com.sda.javaremote18.spring_boot.models.item.ItemModel;
 import org.springframework.data.repository.CrudRepository;

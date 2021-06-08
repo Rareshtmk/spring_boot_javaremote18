@@ -1,11 +1,12 @@
-package com.sda.javaremote18.spring_boot.controllers;
+package com.sda.javaremote18.spring_boot.controllers.items;
 
+import com.sda.javaremote18.spring_boot.controllers.users.UsersRepository;
+import com.sda.javaremote18.spring_boot.controllers.categories.CategoriesRepository;
 import com.sda.javaremote18.spring_boot.models.ServerResponse;
 import com.sda.javaremote18.spring_boot.models.UserModel;
 import com.sda.javaremote18.spring_boot.models.category.CategoryModel;
 import com.sda.javaremote18.spring_boot.models.item.ItemDto;
 import com.sda.javaremote18.spring_boot.models.item.ItemModel;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

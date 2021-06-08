@@ -1,13 +1,12 @@
-package com.sda.javaremote18.spring_boot.controllers;
+package com.sda.javaremote18.spring_boot.controllers.auth;
 
 import com.sda.javaremote18.spring_boot.config.security.JwtTokenUtil;
+import com.sda.javaremote18.spring_boot.controllers.users.UsersRepository;
 import com.sda.javaremote18.spring_boot.models.*;
 import com.sda.javaremote18.spring_boot.models.auth.*;
 import com.sda.javaremote18.spring_boot.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

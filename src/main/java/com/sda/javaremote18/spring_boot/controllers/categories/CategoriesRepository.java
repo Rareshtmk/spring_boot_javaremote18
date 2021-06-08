@@ -1,4 +1,4 @@
-package com.sda.javaremote18.spring_boot.controllers;
+package com.sda.javaremote18.spring_boot.controllers.categories;
 
 import com.sda.javaremote18.spring_boot.models.category.CategoryModel;
 import org.springframework.data.repository.CrudRepository;

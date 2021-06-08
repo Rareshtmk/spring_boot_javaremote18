@@ -1,8 +1,8 @@
-package com.sda.javaremote18.spring_boot.models.item;
+package com.sda.javaremote18.spring_boot.models.sub_category;
 
 import com.sda.javaremote18.spring_boot.utils.Utils;
 
-public class CategoryDto {
+public class SubCategoryDto {
     private Integer id;
     private String title;
 
@@ -12,7 +12,7 @@ public class CategoryDto {
 //            counter++;
 //        }
 //        return counter == 0;
-    return Utils.isValidString(this.title);
+        return Utils.isValidString(this.title);
     }
 
     public Integer getId() {

@@ -1,6 +1,6 @@
 package com.sda.javaremote18.spring_boot.config.security;
 
-import com.sda.javaremote18.spring_boot.controllers.UsersRepository;
+import com.sda.javaremote18.spring_boot.controllers.users.UsersRepository;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;

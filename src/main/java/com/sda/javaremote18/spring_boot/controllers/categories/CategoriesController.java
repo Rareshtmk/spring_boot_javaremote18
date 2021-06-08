@@ -1,16 +1,13 @@
-package com.sda.javaremote18.spring_boot.controllers;
+package com.sda.javaremote18.spring_boot.controllers.categories;
 
+import com.sda.javaremote18.spring_boot.controllers.items.ItemsRepository;
 import com.sda.javaremote18.spring_boot.models.ServerResponse;
-import com.sda.javaremote18.spring_boot.models.UserModel;
 import com.sda.javaremote18.spring_boot.models.category.CategoryModel;
-import com.sda.javaremote18.spring_boot.models.item.CategoryDto;
-import com.sda.javaremote18.spring_boot.models.item.ItemDto;
-import com.sda.javaremote18.spring_boot.models.item.ItemModel;
+import com.sda.javaremote18.spring_boot.models.category.CategoryDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 
 @RestController
