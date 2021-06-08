@@ -1,6 +1,7 @@
 package com.sda.javaremote18.spring_boot.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sda.javaremote18.spring_boot.models.item.ItemModel;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,6 +23,7 @@ public class UserModel implements UserDetails {
     private String lastName;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<ItemModel> items;
 
     public Integer getId() {

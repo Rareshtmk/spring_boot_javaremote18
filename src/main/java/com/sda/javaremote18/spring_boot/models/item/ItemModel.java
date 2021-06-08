@@ -3,6 +3,7 @@ package com.sda.javaremote18.spring_boot.models.item;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sda.javaremote18.spring_boot.models.UserModel;
 import com.sda.javaremote18.spring_boot.models.category.CategoryModel;
+import com.sda.javaremote18.spring_boot.models.sub_category.SubCategoryModel;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -27,13 +28,17 @@ public class ItemModel {
     private Double price;
     private Date date;
     private Boolean deleted;
-    @ManyToOne(fetch = FetchType.LAZY)
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "fk_category")
-    @JsonIgnore
     private CategoryModel category;
-    @ManyToOne(fetch = FetchType.LAZY)
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "fk_sub_category")
+    private SubCategoryModel subCategory;
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "fk_item")
-    @JsonIgnore
     private UserModel owner;
 
     public CategoryModel getCategory() {
@@ -98,5 +103,28 @@ public class ItemModel {
 
     public void setOwner(UserModel owner) {
         this.owner = owner;
+    }
+
+    public void setSubCategory(SubCategoryModel subCategory) {
+        this.subCategory = subCategory;
+    }
+
+    public SubCategoryModel getSubCategory() {
+        return subCategory;
+    }
+
+    @Override
+    public String toString() {
+        return "ItemModel{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", date=" + date +
+                ", deleted=" + deleted +
+                ", category=" + category +
+                ", subCategory=" + subCategory +
+                ", owner=" + owner +
+                '}';
     }
 }

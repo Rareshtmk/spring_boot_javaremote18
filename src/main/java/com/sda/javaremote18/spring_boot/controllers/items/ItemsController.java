@@ -1,5 +1,6 @@
 package com.sda.javaremote18.spring_boot.controllers.items;
 
+import com.sda.javaremote18.spring_boot.controllers.sub_categories.SubCategoriesRepository;
 import com.sda.javaremote18.spring_boot.controllers.users.UsersRepository;
 import com.sda.javaremote18.spring_boot.controllers.categories.CategoriesRepository;
 import com.sda.javaremote18.spring_boot.models.ServerResponse;
@@ -7,6 +8,7 @@ import com.sda.javaremote18.spring_boot.models.UserModel;
 import com.sda.javaremote18.spring_boot.models.category.CategoryModel;
 import com.sda.javaremote18.spring_boot.models.item.ItemDto;
 import com.sda.javaremote18.spring_boot.models.item.ItemModel;
+import com.sda.javaremote18.spring_boot.models.sub_category.SubCategoryModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -19,12 +21,14 @@ public class ItemsController {
     private ItemsRepository itemsRepository;
     private UsersRepository usersRepository;
     private CategoriesRepository categoriesRepository;
+    private SubCategoriesRepository subCategoriesRepository;
 
     @Autowired
-    public ItemsController(ItemsRepository itemsRepository, UsersRepository usersRepository, CategoriesRepository categoriesRepository){
+    public ItemsController(ItemsRepository itemsRepository,SubCategoriesRepository subCategoriesRepository, UsersRepository usersRepository, CategoriesRepository categoriesRepository){
         this.itemsRepository = itemsRepository;
         this.usersRepository = usersRepository;
         this.categoriesRepository = categoriesRepository;
+        this.subCategoriesRepository = subCategoriesRepository;
 
     }
 
@@ -46,6 +50,12 @@ public class ItemsController {
             return new ServerResponse(HttpStatus.BAD_REQUEST.value(),"CategoryId invalid");
         }
 
+        SubCategoryModel subCategory = this.subCategoriesRepository.findById(itemDto.getSubCategoryId()).orElse(null);
+
+        if(subCategory == null) {
+            return new ServerResponse(HttpStatus.BAD_REQUEST.value(), "SubCategoryId invalid");
+        }
+
         ItemModel item = new ItemModel();
         item.setTitle(itemDto.getTitle());
         item.setDescription(itemDto.getDescription());
@@ -55,6 +65,8 @@ public class ItemsController {
         item.setOwner(owner);
 
         item.setCategory(category);
+
+        item.setSubCategory(subCategory);
 
         this.itemsRepository.save(item);
 
@@ -85,12 +97,18 @@ public class ItemsController {
             return new ServerResponse(HttpStatus.BAD_REQUEST.value(),"CategoryId invalid");
         }
 
+        SubCategoryModel subCategory = this.subCategoriesRepository.findById(itemDto.getSubCategoryId()).orElse(null);
+
+        if(subCategory == null) {
+            return new ServerResponse(HttpStatus.BAD_REQUEST.value(), "SubCategoryId invalid");
+        }
 
         itemFromDb.setTitle(itemDto.getTitle());
         itemFromDb.setDescription(itemDto.getDescription());
         itemFromDb.setPrice(itemDto.getPrice());
         itemFromDb.setOwner(owner);
         itemFromDb.setCategory(category);
+        itemFromDb.setSubCategory(subCategory);
 
         this.itemsRepository.save(itemFromDb);
 

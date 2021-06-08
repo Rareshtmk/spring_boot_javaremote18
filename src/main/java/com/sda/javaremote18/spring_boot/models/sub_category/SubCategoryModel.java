@@ -1,5 +1,7 @@
 package com.sda.javaremote18.spring_boot.models.sub_category;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sda.javaremote18.spring_boot.models.item.ItemModel;
 
 import javax.persistence.*;
@@ -13,7 +15,8 @@ public class SubCategoryModel {
     private Integer id;
     private String title;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "subCategory", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<ItemModel> items;
 
     public List<ItemModel> getItems() {
