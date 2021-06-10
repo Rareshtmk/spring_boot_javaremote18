@@ -6,6 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UsersRepository extends CrudRepository<UserModel, Integer> {
@@ -15,4 +16,6 @@ public interface UsersRepository extends CrudRepository<UserModel, Integer> {
 
     @Query("SELECT user from UserModel user where user.email=?1")
     Optional<UserModel> findUserByEmail(String email);
+
+    List<UserModel> findAll();
 }

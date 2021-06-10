@@ -5,24 +5,34 @@ import com.sda.javaremote18.spring_boot.models.ServerResponse;
 import com.sda.javaremote18.spring_boot.models.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
 public class UsersController {
     private UsersRepository usersRepository;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
     @Autowired
-    public UsersController(UsersRepository usersRepository) {
+    public UsersController(UsersRepository usersRepository,BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.usersRepository = usersRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     //    @GetMapping("/users/welcome") // in acest caz dorim sa afisam continutul paginii HTML welcome
 //    public String showWelcomePage() {
 //        return "welcome"; // welcome reprezinta numele paginii de HTML
 //    }
+
+    @GetMapping("/users")
+    public ServerResponse findAll(){
+        List<UserModel> usersList = this.usersRepository.findAll();
+        return new ServerResponse(HttpStatus.OK.value(), "User list", usersList);
+    }
 
     @PutMapping("/users/update")
     public ServerResponse update(@RequestBody UserModel user) {
@@ -44,6 +54,12 @@ public class UsersController {
                 } else {
                     return new ServerResponse(HttpStatus.BAD_REQUEST.value(), "", "Acest email este folosit de catre un alt utilizator", null);
                 }
+            }
+
+            if(!user.getPassword().equals("")){
+                String password = user.getPassword();
+                String newPassword = this.bCryptPasswordEncoder.encode(password);
+                userFromDb.setPassword(newPassword);
             }
 
             this.usersRepository.save(userFromDb);
