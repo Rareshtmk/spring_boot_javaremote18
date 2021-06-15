@@ -1,8 +1,8 @@
 package com.sda.javaremote18.spring_boot.models;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sda.javaremote18.spring_boot.models.item.ItemModel;
+import com.sda.javaremote18.spring_boot.models.order.OrderModel;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -22,9 +22,13 @@ public class UserModel implements UserDetails {
     private String firstName;
     private String lastName;
 
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ItemModel> items;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<OrderModel> orders;
 
     public Integer getId() {
         return id;
@@ -94,5 +98,21 @@ public class UserModel implements UserDetails {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public List<ItemModel> getItems() {
+        return items;
+    }
+
+    public void setItems(List<ItemModel> items) {
+        this.items = items;
+    }
+
+    public List<OrderModel> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<OrderModel> orders) {
+        this.orders = orders;
     }
 }

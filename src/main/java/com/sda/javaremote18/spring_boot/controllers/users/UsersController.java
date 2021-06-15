@@ -16,7 +16,6 @@ public class UsersController {
     private UsersRepository usersRepository;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-
     @Autowired
     public UsersController(UsersRepository usersRepository,BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.usersRepository = usersRepository;

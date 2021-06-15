@@ -4,6 +4,7 @@ import com.sda.javaremote18.spring_boot.controllers.users.UsersRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -13,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -81,22 +83,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         // Set permissions on endpoints
         http.authorizeRequests()
-
-                .antMatchers("/").permitAll();
-//                // Our public endpoints
-//                .antMatchers("/auth/**").permitAll()
-//                .antMatchers("/items/**").fullyAuthenticated()
-//                .antMatchers("/users/**").fullyAuthenticated();
-//                .antMatchers("/users/**").hasAnyRole("admin")
+                // Our public endpoints
+                .antMatchers("/auth/**").permitAll()
+                .antMatchers("/items/**").permitAll()
+                .antMatchers("/users/**").authenticated()
+                .antMatchers("/orders/**").authenticated()
+                .antMatchers(HttpMethod.GET,"/categories/**").permitAll()
+                .antMatchers(HttpMethod.POST,"/categories/**").authenticated()
+                .antMatchers("/sub-categories/**").authenticated()
 //                .antMatchers(HttpMethod.GET, "/api/author/**").permitAll()
 //                .antMatchers(HttpMethod.POST, "/api/author/search").permitAll()
 //                .antMatchers(HttpMethod.GET, "/api/book/**").permitAll()
 //                .antMatchers(HttpMethod.POST, "/api/book/search").permitAll()
-//                // Our private endpoints
-//                .anyRequest().authenticated();
+                // Our private endpoints
+                .anyRequest().authenticated();
 
         // Add JWT token filter
-//        http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     // Used by spring security if CORS is enabled.

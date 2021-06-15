@@ -32,7 +32,8 @@ public class JwtTokenUtil {
                 .setSubject(format("%s,%s", user.getId(), user.getEmail()))
                 .setIssuer(jwtIssuer)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000)) // 30 de zile valabilitate
+//                .setExpiration(new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000)) // 30 de zile valabilitate
+                .setExpiration(new Date("31-12-2055")) // 30 de zile valabilitate
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }

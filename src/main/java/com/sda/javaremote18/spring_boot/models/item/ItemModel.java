@@ -3,10 +3,14 @@ package com.sda.javaremote18.spring_boot.models.item;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sda.javaremote18.spring_boot.models.UserModel;
 import com.sda.javaremote18.spring_boot.models.category.CategoryModel;
+import com.sda.javaremote18.spring_boot.models.order.OrderModel;
 import com.sda.javaremote18.spring_boot.models.sub_category.SubCategoryModel;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "tbl_items")
@@ -40,6 +44,11 @@ public class ItemModel {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "fk_item")
     private UserModel owner;
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "items", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @Fetch(value= FetchMode.SELECT)
+    private List<OrderModel> orders;
 
     public CategoryModel getCategory() {
         return category;
@@ -111,6 +120,14 @@ public class ItemModel {
 
     public SubCategoryModel getSubCategory() {
         return subCategory;
+    }
+
+    public List<OrderModel> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<OrderModel> orders) {
+        this.orders = orders;
     }
 
     @Override
