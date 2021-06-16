@@ -86,11 +86,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // Our public endpoints
                 .antMatchers("/auth/**").permitAll()
                 .antMatchers("/items/**").permitAll()
-                .antMatchers("/users/**").authenticated()
-                .antMatchers("/orders/**").authenticated()
-                .antMatchers(HttpMethod.GET,"/categories/**").permitAll()
-                .antMatchers(HttpMethod.POST,"/categories/**").authenticated()
-                .antMatchers("/sub-categories/**").authenticated()
+                .antMatchers("/users/**").permitAll()
+                .antMatchers("/orders/**").permitAll()
+                .antMatchers("/sub-categories/**").permitAll()
+                .antMatchers("/categories/**").permitAll()
+
 //                .antMatchers(HttpMethod.GET, "/api/author/**").permitAll()
 //                .antMatchers(HttpMethod.POST, "/api/author/search").permitAll()
 //                .antMatchers(HttpMethod.GET, "/api/book/**").permitAll()
@@ -99,7 +99,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated();
 
         // Add JWT token filter
-        http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
+//        http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     // Used by spring security if CORS is enabled.

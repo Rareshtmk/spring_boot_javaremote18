@@ -29,6 +29,7 @@ public class ItemModel {
     private Integer id;
     private String title;
     private String description;
+    private String imageUrl;
     private Double price;
     private Date date;
     private Boolean deleted;
@@ -80,6 +81,14 @@ public class ItemModel {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public Double getPrice() {
@@ -136,6 +145,7 @@ public class ItemModel {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
                 ", price=" + price +
                 ", date=" + date +
                 ", deleted=" + deleted +

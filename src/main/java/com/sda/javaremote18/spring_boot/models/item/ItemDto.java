@@ -9,6 +9,7 @@ public class ItemDto {
     private Integer id;
     private String title;
     private String description;
+    private String imageUrl;
     private Double price;
     private Integer ownerId;
     private Integer categoryId;
@@ -16,7 +17,7 @@ public class ItemDto {
 
     public boolean isValid() {
         int counter = 0;
-        if(!Utils.isValidString(this.title) && !Utils.isValidString(this.description)) {//daca title nu este valid si descrierea nu este valida
+        if(!Utils.isValidString(this.title) && !Utils.isValidString(this.description) && !Utils.isValidString(this.imageUrl)) {//daca title nu este valid si descrierea nu este valida
             counter++;
         }
         if(Double.isNaN(this.price)) {  //isNaN verifica daca parametrul este numar
@@ -68,6 +69,14 @@ public class ItemDto {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public void setDescription(String description) {

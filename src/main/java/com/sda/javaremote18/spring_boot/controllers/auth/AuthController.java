@@ -83,7 +83,7 @@ public class AuthController {
             UserModel user = (UserModel) authenticate.getPrincipal();
 
             // Pregatim obiectul pentru client
-            LoginResponseModel loginResponseModel = new LoginResponseModel(jwtTokenUtil.generateAccessToken(user), user);
+            LoginResponseModel loginResponseModel = new LoginResponseModel( user); //jwtTokenUtil.generateAccessToken(user),
             return new ServerResponse(HttpStatus.OK.value(), "Bun venit " + user.getFirstName(), loginResponseModel);
 
         } catch (BadCredentialsException ex) {

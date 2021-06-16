@@ -6,6 +6,11 @@ public class LoginResponseModel {
     private String token;
     private UserModel user;
 
+    public LoginResponseModel(UserModel user) {
+        this.user = user;
+        this.token = "";
+    }
+
     public LoginResponseModel(String token, UserModel user) {
         this.token = token;
         this.user = user;

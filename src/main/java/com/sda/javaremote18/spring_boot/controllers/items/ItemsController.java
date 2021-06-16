@@ -59,6 +59,7 @@ public class ItemsController {
         ItemModel item = new ItemModel();
         item.setTitle(itemDto.getTitle());
         item.setDescription(itemDto.getDescription());
+        item.setImageUrl(itemDto.getImageUrl());
         item.setPrice(itemDto.getPrice());
         item.setDate(new Date());
         item.setDeleted(false);
@@ -105,6 +106,7 @@ public class ItemsController {
 
         itemFromDb.setTitle(itemDto.getTitle());
         itemFromDb.setDescription(itemDto.getDescription());
+        itemFromDb.setImageUrl(itemDto.getImageUrl());
         itemFromDb.setPrice(itemDto.getPrice());
         itemFromDb.setOwner(owner);
         itemFromDb.setCategory(category);
